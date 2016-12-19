@@ -2,7 +2,7 @@ from __future__ import print_function, division
 import os
 from collections import Counter
 from string import punctuation
-from random import shuffle
+from random import shuffle, randint
 from nltk import WordNetLemmatizer, word_tokenize
 from nltk.corpus import stopwords
 from nltk import NaiveBayesClassifier, classify
@@ -11,8 +11,11 @@ class Model(object):
     stoplist = stopwords.words('english')
 
     def __init__(self):
-        hamPath = 'data/enron1/ham/'
-        spamPath = 'data/enron1/spam/'
+        self.trainDir = self.getRandomDir()
+        strTrainDir = str(self.trainDir)
+        print('Training with enron' + strTrainDir + ' dataset.')
+        hamPath = 'data/enron' + strTrainDir + '/ham/'
+        spamPath = 'data/enron' + strTrainDir + '/spam/'
         spamFiles = os.listdir(spamPath)
         hamFiles = os.listdir(hamPath)
         hamCorpus = self.buildCorpus(hamFiles, hamPath)
@@ -30,6 +33,11 @@ class Model(object):
                 corpus.append(f.read())
         f.close()
         return corpus
+
+    @staticmethod
+    def getRandomDir():
+        numDirs = len([f for f in os.listdir('data') if not f.startswith('.')])
+        return randint(1, numDirs)
 
     @staticmethod
     def labelEmails(spam, ham):
