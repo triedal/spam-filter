@@ -10,9 +10,9 @@ class Shell(Cmd):
     def __init__(self, args):
         Cmd.__init__(self)
         self.model = args
-        testDirIdx = self.getRandomTestDir()
-        hamPath = 'data/enron' + str(testDirIdx) + '/ham/'
-        spamPath = 'data/enron' + str(testDirIdx) + '/spam/'
+        self.testDirIdx = self.getRandomTestDir() #self.model.trainDir
+        hamPath = 'data/enron' + str(self.testDirIdx) + '/ham/'
+        spamPath = 'data/enron' + str(self.testDirIdx) + '/spam/'
         spamFiles = os.listdir(spamPath)
         hamFiles = os.listdir(hamPath)
         hamCorpus = self.model.buildCorpus(hamFiles, hamPath)
@@ -45,6 +45,12 @@ class Shell(Cmd):
         features = self.model.getFeatures(randomEmail[0])
         result = self.model.classifier.classify(features)
         self.printResults(result, randomEmail[1])
+
+    def do_testall(self, args):
+        '''Runs test set against classifier and returns results.'''
+        features = [(self.model.getFeatures(email), label) for (email, label) in self.testEmails]
+        accuracy = self.model.getAccuracy(features)
+        print('ACCURACY AGAINST ENRON' + str(self.testDirIdx) + ': ' + '{0:.1%}'.format(accuracy) + '\n')
 
 
     def do_quit(self, args):

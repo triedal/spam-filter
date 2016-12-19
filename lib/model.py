@@ -11,7 +11,7 @@ class Model(object):
     stoplist = stopwords.words('english')
 
     def __init__(self):
-        self.trainDir = self.getRandomDir()
+        self.trainDir = 1#self.getRandomDir()
         strTrainDir = str(self.trainDir)
         print('Training with enron' + strTrainDir + ' dataset.')
         hamPath = 'data/enron' + strTrainDir + '/ham/'
@@ -58,6 +58,9 @@ class Model(object):
 
     def getFeatures(self, email):
         return { word: count for word, count in Counter(self.preprocess(email)).items() if not word in self.stoplist }
+
+    def getAccuracy(self, testSet):
+        return classify.accuracy(self.classifier, testSet)
 
     def train(self, proportion=0.8):
         print('Generating feature sets...')
