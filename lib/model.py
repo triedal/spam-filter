@@ -11,7 +11,7 @@ class Model(object):
     stoplist = stopwords.words('english')
 
     def __init__(self):
-        self.trainDir = 1#self.getRandomDir()
+        self.trainDir = self.getRandomDir()
         strTrainDir = str(self.trainDir)
         print('Training with enron' + strTrainDir + ' dataset.')
         hamPath = 'data/enron' + strTrainDir + '/ham/'

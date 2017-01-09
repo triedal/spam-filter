@@ -10,7 +10,7 @@ class Shell(Cmd):
     def __init__(self, args):
         Cmd.__init__(self)
         self.model = args
-        self.testDirIdx = self.getRandomTestDir() #self.model.trainDir
+        self.testDirIdx = self.getRandomTestDir()
         hamPath = 'data/enron' + str(self.testDirIdx) + '/ham/'
         spamPath = 'data/enron' + str(self.testDirIdx) + '/spam/'
         spamFiles = os.listdir(spamPath)
@@ -41,7 +41,6 @@ class Shell(Cmd):
         '''Tests random email against spam filter.'''
         randomEmail = choice(self.testEmails)
         self.printEmail(randomEmail[0])
-        # import pdb; pdb.set_trace()
         features = self.model.getFeatures(randomEmail[0])
         result = self.model.classifier.classify(features)
         self.printResults(result, randomEmail[1])
